@@ -6,27 +6,49 @@
 //
 
 import UIKit
+import SDWebImage
 
 class PostViewController: UIViewController {
     
     // MARK: - IBOutlets
     @IBOutlet private weak var postView: UIView!
+    @IBOutlet private weak var imageView: UIImageView!
+    @IBOutlet private weak var ratingButton: UIButton!
+    @IBOutlet private weak var commentsButton: UIButton!
+    @IBOutlet private weak var shareButton: UIButton!
+    @IBOutlet private weak var headerLabel: UILabel!
+    @IBOutlet private weak var usenameLabel: UILabel!
+    @IBOutlet private weak var timePassedLabel: UILabel!
+    @IBOutlet private weak var domainLabel: UILabel!
+    @IBOutlet private weak var bookmarkButton: UIButton!
     
     // MARK: - Behavior
     override func viewDidLoad() {
         super.viewDidLoad()
         postView.setShadow()
+
         let post = FetchPost(limit: 2)
-        post.fetchPost()
-        // Do any additional setup after loading the view.
+        post.fetchPost(setTitles: setTitles(post:))
     }
     
+    private func setTitles(post: Post) {
+        if let url = post.media {
+            self.imageView.sd_setImage(with: URL(string: url), completed: nil)
+        }
+        self.ratingButton.setTitle("\(post.rating)", for: .normal)
+        self.commentsButton.setTitle("\(post.numberOfComments)", for: .normal)
+        self.shareButton.setTitle("Share", for: .normal)
+        self.headerLabel.text = post.title
+        self.usenameLabel.text = post.author
+        self.timePassedLabel.text = "\(post.timePassed)h"
+        self.domainLabel.text = post.domain
+    }
 }
 
 extension UIView {
     func setShadow() {
         self.layer.shadowColor = UIColor.gray.cgColor
-        self.layer.shadowOpacity = 0.5
+        self.layer.shadowOpacity = 1
         self.layer.shadowOffset = .zero
         self.layer.shadowRadius = 10
     }

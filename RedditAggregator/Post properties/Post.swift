@@ -30,27 +30,51 @@ struct PostLayer2: Codable {
 
 struct PostLayer3: Codable {
     let kind: String
-    let data: Post
+    let data: PostLayer4
 }
 
-struct Post: Codable {
-    let username: String
+struct Preview: Codable{
+    let images: [Image]
+    
+    enum CodingKeys: String, CodingKey{
+        case images
+    }
+}
+
+struct Image:Codable{
+    let source: Source
+    enum CodingKeys:String, CodingKey{
+        case source
+    }
+}
+
+struct Source: Codable{
+    let url: String
+    
+    enum CodingKeys:String, CodingKey{
+        case url
+    }
+}
+
+struct PostLayer4: Codable {
+    let author: String
     let domain: String
     let createdUTC: Double
     let title: String
-    let media: String?
+    let preview: Preview?
     let ups: Int
     let downs: Int
     let numComments: Int
-
+    
     enum CodingKeys: String, CodingKey {
-        case username = "author"
+        case author
         case domain
         case createdUTC = "created_utc"
         case title
-        case media
+        case preview
         case ups
         case downs
         case numComments = "num_comments"
     }
 }
+
