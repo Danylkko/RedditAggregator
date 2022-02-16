@@ -32,6 +32,7 @@ struct FetchPost {
                     setTitles(Post(from: post.data.children.first(where: { (item) -> Bool in
                         return item.data.preview != nil
                     })?.data ?? post.data.children[0].data))
+//                    setTitles(Post(from: post.data.children.first!.data))
                 }
             }
         }.resume()

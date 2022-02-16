@@ -11,6 +11,8 @@ import Foundation
 struct Post {
     let post: PostLayer4
     
+    let saved = Bool.random()
+    
     init(from post: PostLayer4) {
         self.post = post
     }

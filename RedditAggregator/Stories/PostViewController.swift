@@ -42,9 +42,11 @@ class PostViewController: UIViewController {
         self.usenameLabel.text = post.author
         self.timePassedLabel.text = "\(post.timePassed)h"
         self.domainLabel.text = post.domain
+        self.bookmarkButton.setImage(post.saved ? UIImage(systemName: "bookmark.fill") : UIImage(systemName: "bookmark"), for: .normal)
     }
 }
 
+// MARK: - Extensions
 extension UIView {
     func setShadow() {
         self.layer.shadowColor = UIColor.gray.cgColor
