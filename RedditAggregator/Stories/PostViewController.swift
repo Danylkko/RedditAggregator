@@ -27,7 +27,7 @@ class PostViewController: UIViewController {
         super.viewDidLoad()
         postView.setShadow()
 
-        let post = FetchPost(limit: 2)
+        let post = FetchPost(limit: 10)
         post.fetchPost(setTitles: setTitles(post:))
     }
     
