@@ -8,7 +8,7 @@
 import Foundation
 
 
-struct Post {
+struct RedditPost {
     let post: PostLayer4
     
     let saved = Bool.random()

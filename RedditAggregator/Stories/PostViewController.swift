@@ -27,11 +27,12 @@ class PostViewController: UIViewController {
         super.viewDidLoad()
         postView.setShadow()
 
-        let post = FetchPost(limit: 10)
-        post.fetchPost(setTitles: setTitles(post:))
+        let post = PostFetcher(limit: 10)
+        post.fetchPost(setPosts: setTitles(posts:))
     }
     
-    private func setTitles(post: Post) {
+    private func setTitles(posts: [RedditPost]) {
+        let post = posts[0]
         if let url = post.media {
             self.imageView.sd_setImage(with: URL(string: url), completed: nil)
         }
@@ -42,7 +43,9 @@ class PostViewController: UIViewController {
         self.usenameLabel.text = post.author
         self.timePassedLabel.text = "\(post.timePassed)h"
         self.domainLabel.text = post.domain
-        self.bookmarkButton.setImage(post.saved ? UIImage(systemName: "bookmark.fill") : UIImage(systemName: "bookmark"), for: .normal)
+        self.bookmarkButton.setImage(post.saved ?
+                                        UIImage(systemName: "bookmark.fill") :
+                                        UIImage(systemName: "bookmark"), for: .normal)
     }
 }
 
