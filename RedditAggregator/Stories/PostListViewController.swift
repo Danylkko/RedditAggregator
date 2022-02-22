@@ -53,5 +53,10 @@ extension PostListViewController: UITableViewDataSource {
         return cell;
     }
     
-    
+}
+
+extension PostListViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        <#code#>
+    }
 }
