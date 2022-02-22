@@ -13,8 +13,11 @@ struct RedditPost {
     
     let saved = Bool.random()
     
-    init(from post: PostLayer4) {
+    let after: String?
+    
+    init(from post: PostLayer4, after: String?) {
         self.post = post
+        self.after = after
     }
     
     var author: String {
@@ -42,8 +45,8 @@ struct RedditPost {
     }
     
     var timePassed: Int {
-        //let tz = TimeZone.current.secondsFromGMT()
-        return Calendar.current.component(.hour, from: Date(timeIntervalSince1970: post.createdUTC))
+        let time = Calendar.current.component(.hour, from: Date(timeIntervalSince1970: post.createdUTC))
+        return time - 2
     }
     
 }

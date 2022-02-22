@@ -22,17 +22,18 @@ class PostViewController: UIViewController {
     @IBOutlet private weak var domainLabel: UILabel!
     @IBOutlet private weak var bookmarkButton: UIButton!
     
+    //MARK: - Other properties
+    public var post: RedditPost?
+    
     // MARK: - Behavior
     override func viewDidLoad() {
         super.viewDidLoad()
         postView.setShadow()
-
-        let post = PostFetcher(limit: 10)
-        post.fetchPost(setPosts: setTitles(posts:))
+        guard let chosenPost = post else { return }
+        setTitles(post: chosenPost)
     }
     
-    private func setTitles(posts: [RedditPost]) {
-        let post = posts[0]
+    public func setTitles(post: RedditPost) {
         if let url = post.media {
             self.imageView.sd_setImage(with: URL(string: url), completed: nil)
         }

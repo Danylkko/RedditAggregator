@@ -20,6 +20,9 @@ class PostCell: UITableViewCell  {
     @IBOutlet private weak var commentsButton: UIButton!
     @IBOutlet private weak var shareButton: UIButton!
     
+    //MARK:- Other properties
+    public var post: RedditPost?
+    
     public func configurePost(post: RedditPost) {
         if let url = post.media {
             self.postImage.sd_setImage(with: URL(string: url), completed: nil)

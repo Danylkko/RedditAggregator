@@ -13,7 +13,7 @@ struct PostLayer1: Codable {
 }
 
 struct PostLayer2: Codable {
-    let after: String
+    let after: String?
     let dist: Int
     let modhash: String
     let geoFilter: String

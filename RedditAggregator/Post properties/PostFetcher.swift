@@ -7,32 +7,39 @@
 
 import UIKit
 
-struct PostFetcher {
+class PostFetcher {
     let subreddit: String
-    let limit: Int
-    let after: Int
+    var limit: Int
+    var after: String?
     
-    init(subreddit: String = "ios", limit: Int = 1, after: Int = 0) {
+    init(subreddit: String = "r/ios", limit: Int = 1, after: String?) {
         self.subreddit = subreddit
         self.limit = limit
         self.after = after
     }
     
-    func fetchPost(setPosts: @escaping ([RedditPost]) -> Void) {
-        var urlComponents = URLComponents(string: "https://www.reddit.com/r/\(self.subreddit)/top.json")!
+    var isPaginating = false
+    
+    func fetchPost(paginating: Bool = false, setPosts: @escaping ([RedditPost]) -> Void) {
+        if paginating {
+            self.isPaginating = true
+        }
+        var urlComponents = URLComponents(string: "https://www.reddit.com/\(self.subreddit)/top.json")!
         urlComponents.queryItems = []
         urlComponents.queryItems?.append(URLQueryItem(name: "limit", value: String(limit)))
-        urlComponents.queryItems?.append(URLQueryItem(name: "after", value: String(after)))
-        
+        if let after = self.after {
+            urlComponents.queryItems?.append(URLQueryItem(name: "after", value: String(after)))
+        }
         let urlSesion = URLSession(configuration: .default)
-        let _ = urlSesion.dataTask(with: urlComponents.url!) { data, error, responce in
+        let _ = urlSesion.dataTask(with: urlComponents.url!) { [weak self] data, error, responce in
             DispatchQueue.global(qos: .userInitiated).async {
                 guard let data = data, let post = try? JSONDecoder().decode(PostLayer1.self, from: data) else { return }
                 let fetchedPosts = post.data.children.map { (postItem) -> RedditPost in
-                    RedditPost(from: postItem.data)
+                    RedditPost(from: postItem.data, after: post.data.after)
                 }
                 DispatchQueue.main.async {
                     setPosts(fetchedPosts)
+                    self?.isPaginating = false
                 }
             }
         }.resume()
