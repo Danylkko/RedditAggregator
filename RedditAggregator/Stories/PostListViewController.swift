@@ -14,7 +14,7 @@ class PostListViewController: UIViewController {
     
     //MARK:- Other properties
     var postList = [RedditPost]()
-    var fetcher = PostFetcher(limit: 10)
+    var fetcher = PostFetcher(limit: 35)
     
     //MARK:- Behaviour
     override func viewDidLoad() {
