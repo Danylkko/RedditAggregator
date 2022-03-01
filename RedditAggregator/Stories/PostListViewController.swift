@@ -66,7 +66,7 @@ extension PostListViewController: UITableViewDelegate {
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let position = scrollView.contentOffset.y
-        if position > (tableView.contentSize.height - 100 - scrollView.frame.size.height) {
+        if position > (tableView.contentSize.height - 250 - scrollView.frame.size.height) {
             guard !fetcher.isPaginating else { return }
             fetcher.limit = 10
             fetcher.after = postList.last?.after

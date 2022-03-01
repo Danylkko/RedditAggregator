@@ -66,6 +66,7 @@
 		9746777227B9234B00F6F7BE /* Post properties */ = {
 			isa = PBXGroup;
 			children = (
+				97231BB927C3E01A00AA27DC /* PostCell.swift */,
 				9746777327B9237B00F6F7BE /* Post.swift */,
 				9746777727B92E7C00F6F7BE /* PostFetcher.swift */,
 				978AC61A27BBE7A400E5CB0A /* RedditPost.swift */,
@@ -99,7 +100,6 @@
 				97CFC3E927B85C8D007001D3 /* Stories */,
 				97CFC3E827B85C76007001D3 /* App */,
 				97CFC3E027B85C26007001D3 /* Info.plist */,
-				97231BB927C3E01A00AA27DC /* PostCell.swift */,
 			);
 			path = RedditAggregator;
 			sourceTree = "<group>";
