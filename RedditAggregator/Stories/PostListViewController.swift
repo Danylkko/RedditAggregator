@@ -32,9 +32,7 @@ class PostListViewController: UIViewController {
         tableView.reloadData()
     }
     
-    
-    
-    // MARK: - Navigation
+    //MARK: - Navigation
     
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -57,6 +55,7 @@ extension PostListViewController: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: "postCell_id", for: indexPath) as! PostCell
         cell.post = postList[indexPath.row]
         cell.configurePost(post: postList[indexPath.row])
+        cell.delegate = self
         return cell;
     }
     
@@ -76,6 +75,17 @@ extension PostListViewController: UITableViewDelegate {
             }
             fetcher.fetchPost(paginating: true, setPosts: fillRedditPostList(list:))
         }
+    }
+    
+}
+
+extension PostListViewController: PostCellDelegate {
+    
+    func didTapButton(with permalink: String) {
+        let url = "https://www.reddit.com\(permalink)"
+        let items = [url]
+        let ac = UIActivityViewController(activityItems: items, applicationActivities: nil)
+        present(ac, animated: true)
     }
     
 }

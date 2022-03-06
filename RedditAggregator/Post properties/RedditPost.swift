@@ -49,4 +49,8 @@ struct RedditPost {
         return time - 2
     }
     
+    var permalink: String {
+        post.permalink
+    }
+    
 }

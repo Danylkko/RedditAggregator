@@ -7,7 +7,13 @@
 
 import UIKit
 
+protocol PostCellDelegate: AnyObject {
+    func didTapButton(with url: String)
+}
+
 class PostCell: UITableViewCell  {
+    
+    weak var delegate: PostCellDelegate?
     
     //MARK:- IBoutlets
     @IBOutlet private weak var postImage: UIImageView!
@@ -19,6 +25,12 @@ class PostCell: UITableViewCell  {
     @IBOutlet private weak var ratingButton: UIButton!
     @IBOutlet private weak var commentsButton: UIButton!
     @IBOutlet private weak var shareButton: UIButton!
+    
+    //MARK:- IBactions
+    @IBAction func shareActionButton(_ sender: Any) {
+        guard let post = self.post else { return }
+        delegate?.didTapButton(with: post.permalink)
+    }
     
     //MARK:- Other properties
     public var post: RedditPost?

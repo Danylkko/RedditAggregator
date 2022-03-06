@@ -221,6 +221,9 @@
                                                                         <color key="titleColor" systemColor="labelColor"/>
                                                                         <imageReference key="image" image="square.and.arrow.up.fill" catalog="system" symbolScale="default"/>
                                                                     </state>
+                                                                    <connections>
+                                                                        <action selector="shareActionButton:" destination="W28-39-DjI" eventType="touchUpInside" id="TzE-zn-Eie"/>
+                                                                    </connections>
                                                                 </button>
                                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4kk-5N-5T8">
                                                                     <rect key="frame" x="161.66666666666666" y="14.333333333333371" width="104.99999999999997" height="21"/>

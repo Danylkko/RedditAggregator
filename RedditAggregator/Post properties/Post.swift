@@ -65,6 +65,7 @@ struct PostLayer4: Codable {
     let ups: Int
     let downs: Int
     let numComments: Int
+    let permalink: String
     
     enum CodingKeys: String, CodingKey {
         case author
@@ -75,6 +76,7 @@ struct PostLayer4: Codable {
         case ups
         case downs
         case numComments = "num_comments"
+        case permalink
     }
 }
 
