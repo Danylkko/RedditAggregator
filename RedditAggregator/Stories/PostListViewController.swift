@@ -28,7 +28,11 @@ class PostListViewController: UIViewController {
     }
     
     private func fillRedditPostList(list: [RedditPost]) {
-        self.postList += list
+        let input = list
+        input.forEach { item in
+            item.saved = repository?.containsId(id: item.id) ?? false
+        }
+        self.postList += input
         tableView.reloadData()
     }
     
@@ -81,11 +85,17 @@ extension PostListViewController: UITableViewDelegate {
 
 extension PostListViewController: PostCellDelegate {
     
-    func didTapButton(with permalink: String) {
+    func didTapSaveButton(with post: inout RedditPost) {
+        post.saved.toggle()
+        tableView.reloadData()
+    }
+    
+    func didTapShareButton(with permalink: String) {
         let url = "https://www.reddit.com\(permalink)"
         let items = [url]
         let ac = UIActivityViewController(activityItems: items, applicationActivities: nil)
         present(ac, animated: true)
     }
+    
     
 }

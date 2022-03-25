@@ -30,8 +30,8 @@ class PostFetcher {
         if let after = self.after {
             urlComponents.queryItems?.append(URLQueryItem(name: "after", value: String(after)))
         }
-        let urlSesion = URLSession(configuration: .default)
-        let _ = urlSesion.dataTask(with: urlComponents.url!) { [weak self] data, error, responce in
+        let urlSession = URLSession(configuration: .default)
+        let _ = urlSession.dataTask(with: urlComponents.url!) { [weak self] data, error, responce in
             DispatchQueue.global(qos: .userInitiated).async {
                 guard let data = data, let post = try? JSONDecoder().decode(PostLayer1.self, from: data) else { return }
                 let fetchedPosts = post.data.children.map { (postItem) -> RedditPost in

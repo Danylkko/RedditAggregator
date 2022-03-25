@@ -8,7 +8,8 @@
 import UIKit
 
 protocol PostCellDelegate: AnyObject {
-    func didTapButton(with url: String)
+    func didTapShareButton(with url: String)
+    func didTapSaveButton(with post: inout RedditPost)
 }
 
 class PostCell: UITableViewCell  {
@@ -29,12 +30,18 @@ class PostCell: UITableViewCell  {
     //MARK:- IBactions
     @IBAction func shareActionButton(_ sender: Any) {
         guard let post = self.post else { return }
-        delegate?.didTapButton(with: post.permalink)
+        delegate?.didTapShareButton(with: post.permalink)
+    }
+    
+    @IBAction func saveActionButton(_ sender: Any) {
+        guard var post = self.post else { return }
+        delegate?.didTapSaveButton(with: &post)
     }
     
     //MARK:- Other properties
     public var post: RedditPost?
     
+    //MARK:- Behavior
     public func configurePost(post: RedditPost) {
         if let url = post.media {
             self.postImage.sd_setImage(with: URL(string: url), completed: nil)

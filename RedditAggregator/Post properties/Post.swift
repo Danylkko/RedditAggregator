@@ -41,9 +41,10 @@ struct Preview: Codable{
     }
 }
 
-struct Image:Codable{
+struct Image: Codable{
     let source: Source
-    enum CodingKeys:String, CodingKey{
+    
+    enum CodingKeys: String, CodingKey {
         case source
     }
 }
@@ -57,6 +58,7 @@ struct Source: Codable{
 }
 
 struct PostLayer4: Codable {
+    
     let author: String
     let domain: String
     let createdUTC: Double
@@ -66,6 +68,7 @@ struct PostLayer4: Codable {
     let downs: Int
     let numComments: Int
     let permalink: String
+    let id: String
     
     enum CodingKeys: String, CodingKey {
         case author
@@ -77,6 +80,7 @@ struct PostLayer4: Codable {
         case downs
         case numComments = "num_comments"
         case permalink
+        case id
     }
 }
 

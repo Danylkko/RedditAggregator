@@ -8,10 +8,21 @@
 import Foundation
 
 
-struct RedditPost {
+class RedditPost: Codable {
+    
     let post: PostLayer4
     
-    let saved = Bool.random()
+    var saved = false {
+       didSet {
+            if saved {
+                guard let result = repository?.save(post: post) else { return }
+                print(result ? "post is saved" : "ERROR. post isn't saved")
+            } else {
+                guard let result = repository?.remove(post: post) else { return }
+                print(result ? "post is removed" : "ERROR. post isn't removed")
+            }
+        }
+    }
     
     let after: String?
     
@@ -51,6 +62,10 @@ struct RedditPost {
     
     var permalink: String {
         post.permalink
+    }
+    
+    var id: String {
+        post.id
     }
     
 }

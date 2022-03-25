@@ -256,6 +256,9 @@
                                                                     <state key="normal" image="bookmark.fill" catalog="system">
                                                                         <color key="titleColor" systemColor="labelColor"/>
                                                                     </state>
+                                                                    <connections>
+                                                                        <action selector="saveActionButton:" destination="W28-39-DjI" eventType="touchUpInside" id="QKF-Mf-ZeT"/>
+                                                                    </connections>
                                                                 </button>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="domain" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ac4-hD-McT">
                                                                     <rect key="frame" x="128.33333333333334" y="9.9999999999999982" width="56.333333333333343" height="20.333333333333329"/>
