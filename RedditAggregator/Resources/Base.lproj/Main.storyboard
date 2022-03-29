@@ -381,9 +381,13 @@
                     <navigationItem key="navigationItem" title="Title" id="uV3-q0-kwq">
                         <barButtonItem key="rightBarButtonItem" title="Item" image="bookmark" catalog="system" id="2kb-Ys-yYm">
                             <color key="tintColor" systemColor="labelColor"/>
+                            <connections>
+                                <action selector="onlySavedModeAction:" destination="bWw-XX-zHM" id="ZsL-xL-0qG"/>
+                            </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="onlySavedModeButton" destination="2kb-Ys-yYm" id="dp0-lf-Ez0"/>
                         <outlet property="subredditTitle" destination="uV3-q0-kwq" id="0UK-36-rly"/>
                         <outlet property="tableView" destination="BWf-rL-4hB" id="mqA-fT-Ln6"/>
                     </connections>

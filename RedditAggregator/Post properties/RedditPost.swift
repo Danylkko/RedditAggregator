@@ -13,12 +13,16 @@ class RedditPost: Codable {
     let post: PostLayer4
     
     var saved = false {
-       didSet {
-            if saved {
-                guard let result = repository?.save(post: post) else { return }
+        willSet {
+            guard let repository = repository else {
+                print("repository doesn't exist error.")
+                return
+            }
+            if newValue {
+                let result = repository.save(post: post)
                 print(result ? "post is saved" : "ERROR. post isn't saved")
-            } else {
-                guard let result = repository?.remove(post: post) else { return }
+            } else if saved && !newValue {
+                let result = repository.remove(post: post)
                 print(result ? "post is removed" : "ERROR. post isn't removed")
             }
         }

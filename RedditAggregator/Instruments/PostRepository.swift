@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct PostRepository {
+class PostRepository {
     let path: URL
     var savedPosts: [PostLayer4]
     
@@ -30,6 +30,7 @@ struct PostRepository {
         encoder.outputFormatting = .prettyPrinted
 
         let data = try! encoder.encode(self.savedPosts)
+        print(self.savedPosts)
         do {
             try String(data: data, encoding: .utf8)!.write(to: self.path, atomically: true, encoding: .utf8)
         } catch {
@@ -37,7 +38,7 @@ struct PostRepository {
         }
     }
     
-    mutating func save(post: PostLayer4) -> Bool {
+    /*mutating*/ func save(post: PostLayer4) -> Bool {
         if savedPosts.first(where: { $0.id == post.id }) == nil {
             savedPosts.append(post)
             return true
@@ -45,7 +46,7 @@ struct PostRepository {
         return false
     }
     
-    mutating func remove(post: PostLayer4) -> Bool {
+    /*mutating*/ func remove(post: PostLayer4) -> Bool {
         let preRemoveCount = savedPosts.count
         savedPosts.removeAll { $0.id == post.id }
         return preRemoveCount == savedPosts.count + 1

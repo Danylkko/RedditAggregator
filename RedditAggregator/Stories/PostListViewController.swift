@@ -12,10 +12,13 @@ class PostListViewController: UIViewController {
     //MARK: - IBoutlets
     @IBOutlet private weak var tableView: UITableView!
     @IBOutlet weak var subredditTitle: UINavigationItem!
+    @IBOutlet weak var onlySavedModeButton: UIBarButtonItem!
     
     //MARK: - Other properties
     var postList = [RedditPost]()
     var fetcher = PostFetcher(limit: 10, after: nil)
+    var onlySaved = false
+    var sourceManager = DataSourceManager()
     
     //MARK: - Behaviour
     override func viewDidLoad() {
@@ -33,7 +36,30 @@ class PostListViewController: UIViewController {
             item.saved = repository?.containsId(id: item.id) ?? false
         }
         self.postList += input
+        self.sourceManager.update(with: self.postList)
         tableView.reloadData()
+    }
+    
+    @IBAction func onlySavedModeAction(_ sender: Any) {
+        self.onlySaved.toggle()
+        onlySavedModeButton.image = UIImage(systemName: self.onlySaved ? "bookmark.fill" : "bookmark")
+        
+        guard let repo = repository else {
+            print("repository is nil")
+            return
+        }
+        
+        if onlySaved {
+            self.postList = repo.savedPosts.map {post in
+                let post = RedditPost(from: post, after: nil)
+                post.saved = true
+                return post
+            }
+        } else {
+            self.postList = sourceManager.getLastUpdate()
+        }
+        
+        self.tableView.reloadData()
     }
     
     //MARK: - Navigation
@@ -69,7 +95,7 @@ extension PostListViewController: UITableViewDelegate {
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let position = scrollView.contentOffset.y
-        if position > (tableView.contentSize.height - 250 - scrollView.frame.size.height) {
+        if position > (tableView.contentSize.height - 250 - scrollView.frame.size.height) && !onlySaved {
             guard !fetcher.isPaginating else { return }
             fetcher.limit = 10
             fetcher.after = postList.last?.after
@@ -96,6 +122,5 @@ extension PostListViewController: PostCellDelegate {
         let ac = UIActivityViewController(activityItems: items, applicationActivities: nil)
         present(ac, animated: true)
     }
-    
     
 }
