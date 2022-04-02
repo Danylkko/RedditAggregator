@@ -36,6 +36,10 @@ class PostListViewController: UIViewController {
         fetcher.fetchPost(setPosts: fillRedditPostList(list:))
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        tableView.reloadData()
+    }
+    
     private func fillRedditPostList(list: [RedditPost]) {
         let input = list
         input.forEach { item in
