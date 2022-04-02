@@ -8,24 +8,36 @@
 import Foundation
 
 class PostRepository {
-    let path: URL
-    var savedPosts: [PostLayer4]
+    private let path: URL
+    private var savedPosts: [PostLayer4]
     
     init(to: String) {
         self.path = PostRepository.getDocumentsDirectory().appendingPathComponent(to)
         if let data = try? Data(contentsOf: path), let cache = try? JSONDecoder().decode([PostLayer4].self, from: data) {
             self.savedPosts = cache
-            print("cache is \(cache) and data is \(data)")
+//            print("cache is \(cache) and data is \(data)")
         } else {
             self.savedPosts = []
         }
     }
     
-    func containsId(id: String) -> Bool{
+    public func getRawPosts() -> [PostLayer4] {
+        return self.savedPosts
+    }
+    
+    public func getRedditPosts() -> [RedditPost] {
+        return self.savedPosts.map { post in
+            let redditPost = RedditPost(from: post, after: nil)
+            redditPost.saved = true
+            return redditPost
+        }
+    }
+    
+    public func containsId(id: String) -> Bool{
         return savedPosts.first{ $0.id == id } != nil
     }
     
-    func backup() {
+    public func backup() {
         let encoder = JSONEncoder()
         encoder.outputFormatting = .prettyPrinted
 
@@ -38,7 +50,7 @@ class PostRepository {
         }
     }
     
-    /*mutating*/ func save(post: PostLayer4) -> Bool {
+    public func save(post: PostLayer4) -> Bool {
         if savedPosts.first(where: { $0.id == post.id }) == nil {
             savedPosts.append(post)
             return true
@@ -46,7 +58,7 @@ class PostRepository {
         return false
     }
     
-    /*mutating*/ func remove(post: PostLayer4) -> Bool {
+    public func remove(post: PostLayer4) -> Bool {
         let preRemoveCount = savedPosts.count
         savedPosts.removeAll { $0.id == post.id }
         return preRemoveCount == savedPosts.count + 1

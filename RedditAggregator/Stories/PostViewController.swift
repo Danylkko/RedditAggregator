@@ -48,6 +48,24 @@ class PostViewController: UIViewController {
                                         UIImage(systemName: "bookmark.fill") :
                                         UIImage(systemName: "bookmark"), for: .normal)
     }
+    
+    @IBAction func shareActionButton(_ sender: Any) {
+        guard let post = self.post else {
+            print("Post is nil...")
+            return
+        }
+        let url = "https://www.reddit.com\(post.permalink)"
+        let items = [url]
+        let ac = UIActivityViewController(activityItems: items, applicationActivities: nil)
+        present(ac, animated: true)
+    }
+    
+    @IBAction func saveActionButton(_ sender: Any) {
+        guard let post = self.post else { return }
+        post.saved.toggle()
+        setTitles(post: post)
+    }
+     
 }
 
 // MARK: - Extensions

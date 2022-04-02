@@ -19,11 +19,11 @@ class RedditPost: Codable {
                 return
             }
             if newValue {
-                let result = repository.save(post: post)
-                print(result ? "post is saved" : "ERROR. post isn't saved")
+                let _ = repository.save(post: post)
+                print("post is saved")
             } else if saved && !newValue {
-                let result = repository.remove(post: post)
-                print(result ? "post is removed" : "ERROR. post isn't removed")
+                let _ = repository.remove(post: post)
+                print("post is removed")
             }
         }
     }

@@ -55,6 +55,9 @@
                                                     <color key="titleColor" systemColor="labelColor"/>
                                                     <imageReference key="image" image="square.and.arrow.up.fill" catalog="system" symbolScale="default"/>
                                                 </state>
+                                                <connections>
+                                                    <action selector="shareActionButton:" destination="3Hc-8N-d9G" eventType="touchUpInside" id="fZc-mf-8NM"/>
+                                                </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ttS-uf-eGa">
                                                 <rect key="frame" x="161.66666666666666" y="22" width="104.99999999999997" height="21"/>
@@ -115,6 +118,9 @@
                                         <state key="normal" image="bookmark.fill" catalog="system">
                                             <color key="titleColor" systemColor="labelColor"/>
                                         </state>
+                                        <connections>
+                                            <action selector="saveActionButton:" destination="3Hc-8N-d9G" eventType="touchUpInside" id="dEn-h2-NrF"/>
+                                        </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Header" lineBreakMode="middleTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4ZD-ka-XZY">
                                         <rect key="frame" x="10" y="55.33333333333335" width="408" height="20.333333333333336"/>
@@ -188,7 +194,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="BWf-rL-4hB">
-                                <rect key="frame" x="0.0" y="88" width="428" height="804"/>
+                                <rect key="frame" x="0.0" y="128" width="428" height="764"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="postCell_id" id="W28-39-DjI" customClass="PostCell" customModule="RedditAggregator" customModuleProvider="target">
@@ -368,12 +374,21 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Search" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="GNZ-mc-9Pd">
+                                <rect key="frame" x="0.0" y="88" width="428" height="40"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="poA-c6-uqM"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="poA-c6-uqM" firstAttribute="bottom" secondItem="BWf-rL-4hB" secondAttribute="bottom" id="8Cg-41-iXh"/>
-                            <constraint firstItem="BWf-rL-4hB" firstAttribute="top" secondItem="poA-c6-uqM" secondAttribute="top" id="TAD-Ei-ycP"/>
+                            <constraint firstItem="GNZ-mc-9Pd" firstAttribute="top" secondItem="poA-c6-uqM" secondAttribute="top" id="Ggk-pc-rir"/>
+                            <constraint firstItem="GNZ-mc-9Pd" firstAttribute="leading" secondItem="poA-c6-uqM" secondAttribute="leading" id="Nk3-2b-Lx9"/>
+                            <constraint firstItem="BWf-rL-4hB" firstAttribute="top" secondItem="poA-c6-uqM" secondAttribute="top" constant="40" id="TAD-Ei-ycP"/>
+                            <constraint firstItem="BWf-rL-4hB" firstAttribute="top" secondItem="GNZ-mc-9Pd" secondAttribute="bottom" id="ddK-8o-24A"/>
+                            <constraint firstItem="poA-c6-uqM" firstAttribute="trailing" secondItem="GNZ-mc-9Pd" secondAttribute="trailing" id="dlL-5a-hmN"/>
                             <constraint firstItem="BWf-rL-4hB" firstAttribute="leading" secondItem="poA-c6-uqM" secondAttribute="leading" id="fNi-Sj-4Xl"/>
                             <constraint firstItem="poA-c6-uqM" firstAttribute="trailing" secondItem="BWf-rL-4hB" secondAttribute="trailing" id="wQL-ua-HBf"/>
                         </constraints>
@@ -388,6 +403,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="onlySavedModeButton" destination="2kb-Ys-yYm" id="dp0-lf-Ez0"/>
+                        <outlet property="searchField" destination="GNZ-mc-9Pd" id="a47-Av-kXH"/>
                         <outlet property="subredditTitle" destination="uV3-q0-kwq" id="0UK-36-rly"/>
                         <outlet property="tableView" destination="BWf-rL-4hB" id="mqA-fT-Ln6"/>
                     </connections>

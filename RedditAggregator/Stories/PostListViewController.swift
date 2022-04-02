@@ -11,8 +11,9 @@ class PostListViewController: UIViewController {
     
     //MARK: - IBoutlets
     @IBOutlet private weak var tableView: UITableView!
-    @IBOutlet weak var subredditTitle: UINavigationItem!
-    @IBOutlet weak var onlySavedModeButton: UIBarButtonItem!
+    @IBOutlet private weak var subredditTitle: UINavigationItem!
+    @IBOutlet private weak var onlySavedModeButton: UIBarButtonItem!
+    @IBOutlet private weak var searchField: UITextField!
     
     //MARK: - Other properties
     var postList = [RedditPost]()
@@ -23,11 +24,20 @@ class PostListViewController: UIViewController {
     //MARK: - Behaviour
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.dataSource = self
-        tableView.delegate = self
+        self.tableView.dataSource = self
+        self.tableView.delegate = self
+        self.searchField.delegate = self
         self.subredditTitle.title = fetcher.subreddit
         
+        if !onlySaved {
+            self.searchField.placeholder = "Search saved posts..."
+        }
+        
         fetcher.fetchPost(setPosts: fillRedditPostList(list:))
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        tableView.reloadData()
     }
     
     private func fillRedditPostList(list: [RedditPost]) {
@@ -50,14 +60,16 @@ class PostListViewController: UIViewController {
         }
         
         if onlySaved {
-            self.postList = repo.savedPosts.map {post in
-                let post = RedditPost(from: post, after: nil)
-                post.saved = true
-                return post
+            self.postList = repo.getRedditPosts().map {
+                $0.saved = true
+                return $0
             }
+            self.searchField.placeholder = "Search..."
         } else {
             self.postList = sourceManager.getLastUpdate()
+            self.searchField.placeholder = "Search saved posts..."
         }
+        
         
         self.tableView.reloadData()
     }
@@ -121,6 +133,35 @@ extension PostListViewController: PostCellDelegate {
         let items = [url]
         let ac = UIActivityViewController(activityItems: items, applicationActivities: nil)
         present(ac, animated: true)
+    }
+    
+}
+
+extension PostListViewController: UITextFieldDelegate {
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        self.searchField.resignFirstResponder()
+        return true
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        guard let posts = repository, let text = textField.text else { return }
+        guard text.isEmpty else { return }
+        self.postList = posts.getRedditPosts()
+        tableView.reloadData()
+    }
+    
+    func textFieldDidChangeSelection(_ textField: UITextField) {
+        guard let searchText = textField.text?.lowercased(), let posts = repository, onlySaved else {
+            print("palianytsia")
+            return }
+        
+        let searchResults = posts.getRedditPosts()
+            .filter { $0.title.lowercased().contains(searchText) }
+        
+        self.postList = searchResults
+        
+        self.tableView.reloadData()
     }
     
 }
