@@ -10,6 +10,7 @@ import UIKit
 protocol PostCellDelegate: AnyObject {
     func didTapShareButton(with url: String)
     func didTapSaveButton(with post: inout RedditPost)
+    func didDoubleTapImageGesture(with post: inout RedditPost)
 }
 
 class PostCell: UITableViewCell  {
@@ -18,6 +19,7 @@ class PostCell: UITableViewCell  {
     
     //MARK:- IBoutlets
     @IBOutlet private weak var postImage: UIImageView!
+    @IBOutlet private weak var viewPostImage: UIView!
     @IBOutlet private weak var postHeaderLabel: UILabel!
     @IBOutlet private weak var usernameLabel: UILabel!
     @IBOutlet private weak var timeLabel: UILabel!
@@ -30,12 +32,17 @@ class PostCell: UITableViewCell  {
     //MARK:- IBactions
     @IBAction func shareActionButton(_ sender: Any) {
         guard let post = self.post else { return }
-        delegate?.didTapShareButton(with: post.permalink)
+        self.delegate?.didTapShareButton(with: post.permalink)
     }
     
     @IBAction func saveActionButton(_ sender: Any) {
         guard var post = self.post else { return }
-        delegate?.didTapSaveButton(with: &post)
+        self.delegate?.didTapSaveButton(with: &post)
+    }
+    
+    @objc func didDoubleTapImageGesture() {
+        guard var post = self.post else { return }
+        self.delegate?.didDoubleTapImageGesture(with: &post)
     }
     
     //MARK:- Other properties
@@ -48,6 +55,12 @@ class PostCell: UITableViewCell  {
         } else {
             self.postImage.image = #imageLiteral(resourceName: "Placehorders")
         }
+        
+        let doubleTap = UITapGestureRecognizer(target: self, action: #selector(didDoubleTapImageGesture))
+        doubleTap.numberOfTapsRequired = 2
+        self.viewPostImage.addGestureRecognizer(doubleTap)
+        doubleTap.delaysTouchesBegan = true
+        
         self.ratingButton.setTitle("\(post.rating)", for: .normal)
         self.commentsButton.setTitle("\(post.numberOfComments)", for: .normal)
         self.shareButton.setTitle("Share", for: .normal)

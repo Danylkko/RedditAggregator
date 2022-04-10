@@ -123,6 +123,11 @@ extension PostListViewController: UITableViewDelegate {
 
 extension PostListViewController: PostCellDelegate {
     
+    func didDoubleTapImageGesture(with post: inout RedditPost) {
+        post.saved.toggle()
+        tableView.reloadData()
+    }
+    
     func didTapSaveButton(with post: inout RedditPost) {
         post.saved.toggle()
         tableView.reloadData()

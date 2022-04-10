@@ -369,6 +369,7 @@
                                             <outlet property="shareButton" destination="QY8-tb-Fsn" id="Xt5-4C-7wB"/>
                                             <outlet property="timeLabel" destination="WKZ-Bs-ZJ6" id="SzV-xe-Vhm"/>
                                             <outlet property="usernameLabel" destination="zQl-lt-3Nc" id="VUQ-Lj-yyI"/>
+                                            <outlet property="viewPostImage" destination="Voi-gv-jkE" id="fji-Eh-8nL"/>
                                             <segue destination="3Hc-8N-d9G" kind="show" id="pmO-CW-itp"/>
                                         </connections>
                                     </tableViewCell>
