@@ -15,26 +15,26 @@ class PostRepository {
         self.path = PostRepository.getDocumentsDirectory().appendingPathComponent(to)
         if let data = try? Data(contentsOf: path), let cache = try? JSONDecoder().decode([PostLayer4].self, from: data) {
             self.savedPosts = cache
-//            print("cache is \(cache) and data is \(data)")
+            //print("cache is \(cache) and data is \(data)")
         } else {
             self.savedPosts = []
         }
     }
     
     public func getRawPosts() -> [PostLayer4] {
-        return self.savedPosts
+        self.savedPosts
     }
     
     public func getRedditPosts() -> [RedditPost] {
-        return self.savedPosts.map { post in
+        self.savedPosts.map { post in
             let redditPost = RedditPost(from: post, after: nil)
             redditPost.saved = true
             return redditPost
-        }
+        }.reversed()
     }
     
     public func containsId(id: String) -> Bool{
-        return savedPosts.first{ $0.id == id } != nil
+        savedPosts.first{ $0.id == id } != nil
     }
     
     public func backup() {

@@ -20,10 +20,10 @@ class RedditPost: Codable {
             }
             if newValue {
                 let _ = repository.save(post: post)
-                print("post is saved")
+                //print("post is saved")
             } else if saved && !newValue {
                 let _ = repository.remove(post: post)
-                print("post is removed")
+                //print("post is removed")
             }
         }
     }

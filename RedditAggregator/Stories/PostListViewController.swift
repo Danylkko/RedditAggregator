@@ -60,10 +60,7 @@ class PostListViewController: UIViewController {
         }
         
         if onlySaved {
-            self.postList = repo.getRedditPosts().map {
-                $0.saved = true
-                return $0
-            }
+            self.postList = repo.getRedditPosts()
             self.searchField.placeholder = "Search..."
         } else {
             self.postList = sourceManager.getLastUpdate()
