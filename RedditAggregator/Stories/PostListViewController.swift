@@ -67,7 +67,6 @@ class PostListViewController: UIViewController {
             self.searchField.placeholder = "Search saved posts..."
         }
         
-        
         self.tableView.reloadData()
     }
     
