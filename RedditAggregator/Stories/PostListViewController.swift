@@ -156,7 +156,8 @@ extension PostListViewController: UITextFieldDelegate {
     func textFieldDidChangeSelection(_ textField: UITextField) {
         guard let searchText = textField.text?.lowercased(), let posts = repository, onlySaved else {
             print("palianytsia")
-            return }
+            return
+        }
         
         let searchResults = posts.getRedditPosts()
             .filter { $0.title.lowercased().contains(searchText) }

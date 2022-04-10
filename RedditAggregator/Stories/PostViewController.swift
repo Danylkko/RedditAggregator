@@ -31,6 +31,11 @@ class PostViewController: UIViewController {
         postView.setShadow()
         guard let chosenPost = post else { return }
         setTitles(post: chosenPost)
+        
+        let doubleTap = UITapGestureRecognizer(target: self, action: #selector(didDoubleTapImageGesture))
+        doubleTap.numberOfTapsRequired = 2
+        self.postView.addGestureRecognizer(doubleTap)
+        doubleTap.delaysTouchesBegan = true
     }
     
     public func setTitles(post: RedditPost) {
@@ -49,6 +54,8 @@ class PostViewController: UIViewController {
                                         UIImage(systemName: "bookmark"), for: .normal)
     }
     
+    //MARK:- IBActions
+    
     @IBAction func shareActionButton(_ sender: Any) {
         guard let post = self.post else {
             print("Post is nil...")
@@ -61,6 +68,12 @@ class PostViewController: UIViewController {
     }
     
     @IBAction func saveActionButton(_ sender: Any) {
+        guard let post = self.post else { return }
+        post.saved.toggle()
+        setTitles(post: post)
+    }
+    
+    @objc func didDoubleTapImageGesture() {
         guard let post = self.post else { return }
         post.saved.toggle()
         setTitles(post: post)
