@@ -8,6 +8,8 @@
 import Foundation
 
 class PostRepository {
+    public static let repository = PostRepository(to: "saved_posts.json")
+    
     private let path: URL
     private var savedPosts: [PostLayer4]
     

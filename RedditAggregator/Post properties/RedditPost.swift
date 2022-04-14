@@ -14,15 +14,11 @@ class RedditPost: Codable {
     
     var saved = false {
         willSet {
-            guard let repository = repository else {
-                print("repository doesn't exist error.")
-                return
-            }
             if newValue {
-                let _ = repository.save(post: post)
+                let _ = PostRepository.repository.save(post: post)
                 //print("post is saved")
             } else if saved && !newValue {
-                let _ = repository.remove(post: post)
+                let _ = PostRepository.repository.remove(post: post)
                 //print("post is removed")
             }
         }
@@ -60,8 +56,9 @@ class RedditPost: Codable {
     }
     
     var timePassed: Int {
-        let time = Calendar.current.component(.hour, from: Date(timeIntervalSince1970: post.createdUTC))
-        return time - 2
+        let hours = Calendar.current.component(.hour, from: Date(timeIntervalSince1970: post.createdUTC))
+        let days = Calendar.current.component(.day, from: Date(timeIntervalSince1970: post.createdUTC))
+        return days > 0 ? (days * 24 + hours) : hours
     }
     
     var permalink: String {

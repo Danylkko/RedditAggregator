@@ -16,6 +16,7 @@ protocol PostCellDelegate: AnyObject {
 class PostCell: UITableViewCell  {
     
     weak var delegate: PostCellDelegate?
+    var animationContainerView: UIView?
     
     //MARK:- IBoutlets
     
@@ -46,6 +47,28 @@ class PostCell: UITableViewCell  {
     @objc func didDoubleTapImageGesture() {
         guard var post = self.post else { return }
         self.delegate?.didDoubleTapImageGesture(with: &post)
+        
+        let bookmark = Bookmark(frame: self.postImage.frame)
+        DispatchQueue.main.asyncAfter(deadline: .now()) {
+            UIView.transition(with: self.postImage,
+                              duration: 0.5,
+                              options: [.transitionCrossDissolve],
+                              animations: {
+                                self.postImage.addSubview(bookmark)
+                              },
+                              completion: nil)
+            
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            UIView.transition(with: self.postImage,
+                              duration: 1,
+                              options: [.transitionCrossDissolve],
+                              animations: {
+                                self.postImage.subviews.forEach { $0.removeFromSuperview() }
+                              },
+                              completion: nil)
+            
+        }
     }
     
     //MARK:- Other properties
@@ -69,63 +92,14 @@ class PostCell: UITableViewCell  {
         self.shareButton.setTitle("Share", for: .normal)
         self.postHeaderLabel.text = post.title
         self.usernameLabel.text = post.author
-        self.timeLabel.text = "\(post.timePassed)h"
+        self.timeLabel.text = post.timePassed > 24 ? "\(post.timePassed / 24)d" : "\(post.timePassed)h"
         self.domainLabel.text = post.domain
         self.bookmarkButton.setImage(post.saved ? UIImage(systemName: "bookmark.fill") : UIImage(systemName: "bookmark"), for: .normal)
-        // to show normal bookmark button remove line below
-        self.bookmarkButton.isHidden = true
         
-        self.bookmarkFigure(in: self.viewMetadata)
     }
     
-    //MARK:- Custom Graphics
-    
-    private func bookmarkFigure(in view: UIView) {
-        let start = CGPoint(
-            x: view.frame.width - BookmarkConstants.marginFromRightEdge - BookmarkConstants.width,
-            y: view.frame.midY - BookmarkConstants.height / 2)
-        
-        let path = UIBezierPath()
-        path.move(to: start)
-        path.addLine(to: CGPoint(x: start.x + BookmarkConstants.width,
-                                 y: start.y))
-        path.addLine(to: CGPoint(x: start.x + BookmarkConstants.width,
-                                 y: start.y + BookmarkConstants.height))
-        path.addLine(to: CGPoint(x: start.x + BookmarkConstants.width / 2,
-                                 y: start.y + BookmarkConstants.height - BookmarkConstants.curveDiff))
-        path.addLine(to: CGPoint(x: start.x,
-                                 y: start.y + BookmarkConstants.height))
-        path.addLine(to: start)
-        
-        path.close()
-        
-        let shapeLayer = CAShapeLayer()
-        shapeLayer.path = path.cgPath
-        shapeLayer.strokeColor = UIColor.blue.cgColor
-        shapeLayer.fillColor = UIColor.yellow.cgColor
-        shapeLayer.lineWidth = BookmarkConstants.lineWidth
-        
-        view.layer.addSublayer(shapeLayer)
-    }
-    
-    struct BookmarkConstants {
-        private static let constLength: CGFloat = 10
-        
-        static let marginFromRightEdge: CGFloat = 20
-        
-        static var height: CGFloat {
-            constLength * 1.8
-        }
-        
-        static var width: CGFloat {
-            constLength
-        }
-        
-        static var curveDiff: CGFloat {
-            constLength * 0.5
-        }
-        
-        static let lineWidth: CGFloat = 1.5
-        
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        self.postImage.subviews.forEach { $0.removeFromSuperview() }
     }
 }

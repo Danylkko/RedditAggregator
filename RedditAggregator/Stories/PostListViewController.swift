@@ -43,7 +43,7 @@ class PostListViewController: UIViewController {
     private func fillRedditPostList(list: [RedditPost]) {
         let input = list
         input.forEach { item in
-            item.saved = repository?.containsId(id: item.id) ?? false
+            item.saved = PostRepository.repository.containsId(id: item.id)
         }
         self.postList += input
         self.sourceManager.update(with: self.postList)
@@ -52,22 +52,22 @@ class PostListViewController: UIViewController {
     
     @IBAction func onlySavedModeAction(_ sender: Any) {
         self.onlySaved.toggle()
-        onlySavedModeButton.image = UIImage(systemName: self.onlySaved ? "bookmark.fill" : "bookmark")
+        self.onlySavedModeButton.image = UIImage(systemName: self.onlySaved ? "bookmark.fill" : "bookmark")
         
-        guard let repo = repository else {
-            print("repository is nil")
-            return
-        }
+        self.subredditTitle.titleView = self.searchField.inputView
         
-        if onlySaved {
-            self.postList = repo.getRedditPosts()
-            self.searchField.placeholder = "Search..."
-        } else {
-            self.postList = sourceManager.getLastUpdate()
-            self.searchField.placeholder = "Search saved posts..."
-        }
+        self.postList = self.onlySaved ?
+            PostRepository.repository.getRedditPosts() :
+            self.sourceManager.getLastUpdate()
+        
+        self.searchField.placeholder = self.onlySaved ?
+            "Search..." :
+            "Search saved posts..."
         
         self.tableView.reloadData()
+        if self.postList.count != 0 {
+            self.tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .none, animated: true)
+        }
     }
     
     //MARK: - Navigation
@@ -99,6 +99,7 @@ extension PostListViewController: UITableViewDataSource {
     
 }
 
+ // MARK: - UITableViewDelegate, pagination
 extension PostListViewController: UITableViewDelegate {
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -117,11 +118,11 @@ extension PostListViewController: UITableViewDelegate {
     
 }
 
+ // MARK: - PostCellDelegate
 extension PostListViewController: PostCellDelegate {
     
     func didDoubleTapImageGesture(with post: inout RedditPost) {
-        post.saved.toggle()
-        tableView.reloadData()
+        self.didTapSaveButton(with: &post)
     }
     
     func didTapSaveButton(with post: inout RedditPost) {
@@ -137,7 +138,7 @@ extension PostListViewController: PostCellDelegate {
     }
     
 }
-
+// MARK: - UITextFieldDelegate
 extension PostListViewController: UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -146,19 +147,19 @@ extension PostListViewController: UITextFieldDelegate {
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
-        guard let posts = repository, let text = textField.text else { return }
+        guard let text = textField.text else { return }
         guard text.isEmpty else { return }
-        self.postList = posts.getRedditPosts()
+        self.postList = PostRepository.repository.getRedditPosts()
         tableView.reloadData()
     }
     
     func textFieldDidChangeSelection(_ textField: UITextField) {
-        guard let searchText = textField.text?.lowercased(), let posts = repository, onlySaved else {
+        guard let searchText = textField.text?.lowercased(), onlySaved else {
             print("palianytsia")
             return
         }
         
-        let searchResults = posts.getRedditPosts()
+        let searchResults = PostRepository.repository.getRedditPosts()
             .filter { $0.title.lowercased().contains(searchText) }
         
         self.postList = searchResults
