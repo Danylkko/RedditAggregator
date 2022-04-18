@@ -49,26 +49,7 @@ class PostCell: UITableViewCell  {
         self.delegate?.didDoubleTapImageGesture(with: &post)
         
         let bookmark = Bookmark(frame: self.postImage.frame)
-        DispatchQueue.main.asyncAfter(deadline: .now()) {
-            UIView.transition(with: self.postImage,
-                              duration: 0.5,
-                              options: [.transitionCrossDissolve],
-                              animations: {
-                                self.postImage.addSubview(bookmark)
-                              },
-                              completion: nil)
-            
-        }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            UIView.transition(with: self.postImage,
-                              duration: 1,
-                              options: [.transitionCrossDissolve],
-                              animations: {
-                                self.postImage.subviews.forEach { $0.removeFromSuperview() }
-                              },
-                              completion: nil)
-            
-        }
+        bookmark.animate(during: 0.5, to: self.postImage)
     }
     
     //MARK:- Other properties

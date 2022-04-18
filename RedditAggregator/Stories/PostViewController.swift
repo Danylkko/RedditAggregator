@@ -28,13 +28,15 @@ class PostViewController: UIViewController {
     // MARK: - Behavior
     override func viewDidLoad() {
         super.viewDidLoad()
-        postView.setShadow()
+        self.postView.setShadow()
         guard let chosenPost = post else { return }
-        setTitles(post: chosenPost)
+        // MARK:- that's the way to force imageView to respond to gesture recognizer
+        self.imageView.isUserInteractionEnabled = true
+        self.setTitles(post: chosenPost)
         
         let doubleTap = UITapGestureRecognizer(target: self, action: #selector(didDoubleTapImageGesture))
         doubleTap.numberOfTapsRequired = 2
-        self.postView.addGestureRecognizer(doubleTap)
+        self.imageView.addGestureRecognizer(doubleTap)
         doubleTap.delaysTouchesBegan = true
     }
     
@@ -77,6 +79,10 @@ class PostViewController: UIViewController {
         guard let post = self.post else { return }
         post.saved.toggle()
         setTitles(post: post)
+        
+        //TODO fix that view doesn't appears in the middle
+        let bookmark = Bookmark(frame: self.imageView.frame)
+        bookmark.animate(during: 0.5, to: self.postView)
     }
      
 }

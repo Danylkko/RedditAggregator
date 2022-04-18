@@ -9,11 +9,15 @@ import UIKit
 
 class Bookmark: UIView {
     let shapeLayer = CAShapeLayer()
- 
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.configureView()
+    }
+    
+    init(frame: CGRect, isHidden: Bool) {
+        super.init(frame: frame)
+        self.isHidden = isHidden
     }
     
     required init?(coder: NSCoder) {
@@ -49,6 +53,29 @@ class Bookmark: UIView {
         return path
     }
     
+    public func animate(during duration: TimeInterval, to superview: UIView) {
+        DispatchQueue.main.asyncAfter(deadline: .now()) {
+            UIView.transition(with: superview,
+                              duration: duration,
+                              options: [.autoreverse, .repeat, .transitionCrossDissolve],
+                              animations: {
+                                superview.addSubview(self)
+                              },
+                              completion: nil)
+
+        }
+//        DispatchQueue.main.asyncAfter(deadline: .now() + duration) {
+//            UIView.transition(with: superview,
+//                              duration: duration,
+//                              options: [.transitionFlipFromRight],
+//                              animations: {
+//                                self.removeFromSuperview()
+//                              },
+//                              completion: nil)
+//
+//        }
+    }
+    
     struct BookmarkConstants {
         private static let constLength: CGFloat = 50
         
@@ -64,7 +91,7 @@ class Bookmark: UIView {
             constLength * 0.5
         }
         
-        static let lineWidth: CGFloat = 1.5
+        static let lineWidth: CGFloat = 5
         static let fillColor = UIColor.yellow.cgColor
         static let strokeColor = UIColor.blue.cgColor
     }
