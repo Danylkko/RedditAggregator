@@ -57,23 +57,23 @@ class Bookmark: UIView {
         DispatchQueue.main.asyncAfter(deadline: .now()) {
             UIView.transition(with: superview,
                               duration: duration,
-                              options: [.autoreverse, .repeat, .transitionCrossDissolve],
+                              options: [.transitionCrossDissolve],
                               animations: {
                                 superview.addSubview(self)
                               },
                               completion: nil)
 
         }
-//        DispatchQueue.main.asyncAfter(deadline: .now() + duration) {
-//            UIView.transition(with: superview,
-//                              duration: duration,
-//                              options: [.transitionFlipFromRight],
-//                              animations: {
-//                                self.removeFromSuperview()
-//                              },
-//                              completion: nil)
-//
-//        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + duration) {
+            UIView.transition(with: superview,
+                              duration: duration,
+                              options: [.transitionCrossDissolve],
+                              animations: {
+                                self.removeFromSuperview()
+                              },
+                              completion: nil)
+
+        }
     }
     
     struct BookmarkConstants {
